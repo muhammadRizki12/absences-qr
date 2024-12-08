@@ -1,7 +1,10 @@
 <?php
 
-use App\Http\Controllers\AbcenceController;
+use App\Http\Controllers\AbsenceController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClassController;
+use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,4 +28,19 @@ Route::get('/classes/create', [ClassController::class, 'create'])->name('class.c
 Route::post('/classes', [ClassController::class, 'store'])->name('class.store');
 
 // Abcences
-Route::get('/absences/{class_name}', [AbcenceController::class, 'index'])->name('abcence.index');
+Route::get('/absences/{class_name}', [AbsenceController::class, 'index'])->name('absence.index');
+
+// Auth
+Route::get('/login', [AuthController::class, 'index'])->name('auth.index');
+Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
+Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+
+// Users
+Route::get('/users', [UserController::class, 'index'])->name('user.index');
+Route::get('/users/create', [UserController::class, 'create'])->name('user.create');
+Route::post('/users', [UserController::class, 'store'])->name('user.store');
+
+// Schedules
+Route::get('/schedules', [ScheduleController::class, 'index'])->name('schedule.index');
+Route::get('/schedules/create', [ScheduleController::class, 'create'])->name('schedule.create');
+Route::post('/schedules', [ScheduleController::class, 'store'])->name('schedule.store');

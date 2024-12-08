@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class UserModel extends Model
+class UserModel extends Authenticatable
 {
     use HasFactory;
     protected $table = 'users';
@@ -21,7 +22,6 @@ class UserModel extends Model
         "golongan",
         "jabatan_tugas_utama",
         "jabatan_tugas_tambahan",
-
     ];
     public $timestamps = false;
 }

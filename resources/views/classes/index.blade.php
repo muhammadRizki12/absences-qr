@@ -9,6 +9,7 @@
 </head>
 
 <body>
+    {{-- <h1>Welcome, User {{ Auth::user()->name }}</h1> --}}
     @foreach ($classes as $class)
         <div style="margin-top: 50px; text-align: center">
             <h1 for="">{{ $class->class_name }}</h1>

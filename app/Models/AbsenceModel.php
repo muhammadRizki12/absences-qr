@@ -4,18 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class AdminModel extends Authenticatable
+class AbsenceModel extends Model
 {
     use HasFactory;
-
-    protected $table = 'admins';
+    protected $table = 'absences';
 
     protected $fillable = [
-        'email',
-        'nama',
-        'password'
+        'waktu_absen',
+        'status',
+        'schedule_id'
     ];
     public $timestamps = false;
 }

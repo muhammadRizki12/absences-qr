@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ClassModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class ClassController extends Controller
@@ -23,6 +24,9 @@ class ClassController extends Controller
     {
 
         $class_name = $request->class_name;
+        // $user = Auth::user();
+        // $userId = $user->id; // Akses ID
+        // dd("$userId");
 
         // Create QR Codes
         $qrCode = QrCode::format('png')
@@ -31,7 +35,6 @@ class ClassController extends Controller
 
         // convert to base 64 format
         $base64Image = base64_encode($qrCode);
-
 
         $class = ClassModel::create([
             'class_name' => $class_name,
