@@ -12,16 +12,10 @@ class UserModel extends Authenticatable
     protected $table = 'users';
 
     protected $fillable = [
+        "username",
         "email",
         "password",
-        "nama",
-        "nip",
-        "jenis_kelamin",
-        "jenjang_jabatan",
-        "pangkat",
-        "golongan",
-        "jabatan_tugas_utama",
-        "jabatan_tugas_tambahan",
+        "role"
     ];
     public $timestamps = false;
 }

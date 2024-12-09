@@ -11,7 +11,7 @@ class AbsenceModel extends Model
     protected $table = 'absences';
 
     protected $fillable = [
-        'waktu_absen',
+        'absence_datetime',
         'status',
         'schedule_id'
     ];

@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
-            $table->string('hari');
-            $table->time('waktu_masuk');
-            $table->time('waktu_keluar');
+            $table->string('day');
+            $table->time('entry_time');
+            $table->time('out_time');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('class_id');
 

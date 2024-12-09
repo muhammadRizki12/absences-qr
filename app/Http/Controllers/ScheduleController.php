@@ -24,9 +24,9 @@ class ScheduleController extends Controller
     public function store(Request $request)
     {
         $schedule = ScheduleModel::create([
-            'hari' => $request->hari,
-            'waktu_masuk' => $request->waktu_masuk,
-            'waktu_keluar' => $request->waktu_keluar,
+            'day' => $request->day,
+            'entry_time' => $request->entry_time,
+            'out_time' => $request->out_time,
             'user_id' => $request->user_id,
             'class_id' => $request->class_id,
         ]);

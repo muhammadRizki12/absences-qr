@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('absences', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('waktu_absen');
+            $table->dateTime('absence_datetime');
             $table->string('status');
             $table->unsignedBigInteger('schedule_id');
 

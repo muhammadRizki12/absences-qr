@@ -34,14 +34,14 @@ class AbsenceController extends Controller
                 ->whereHas('class', function ($query) use ($class_name) {
                     $query->where('class_name', "$class_name");
                 })
-                ->where('hari', $currentDay)
+                ->where('day', $currentDay)
                 ->first();
 
             if (!$schedule) return 'Schedule not found!';
 
             // Parsing entry time dan out time
-            $entryTime = Carbon::parse($schedule->waktu_masuk);
-            $outTime = Carbon::parse($schedule->waktu_keluar);
+            $entryTime = Carbon::parse($schedule->entry_time);
+            $outTime = Carbon::parse($schedule->out_time);
 
             // added 30 minutes tolerance
             $entryTimePlus30 = $entryTime->copy()->addMinutes(30);
@@ -66,7 +66,7 @@ class AbsenceController extends Controller
 
             // saves data to absence
             $absence = AbsenceModel::create([
-                'waktu_absen' => $currentTime,
+                'absence_datetime' => $currentTime,
                 'status' => $status,
                 'schedule_id' => $schedule->id
             ]);

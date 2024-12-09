@@ -11,15 +11,15 @@ class ScheduleModel extends Model
     protected $table = 'schedules';
 
     protected $fillable = [
-        'hari',
-        'waktu_masuk',
-        'waktu_keluar',
+        'day',
+        'entry_time',
+        'out_time',
         'user_id',
         'class_id'
     ];
     public $timestamps = false;
 
-    // relasi ke tabel 'classes'
+    // relation table 'classes'
     public function class()
     {
         return $this->belongsTo(ClassModel::class, 'class_id');

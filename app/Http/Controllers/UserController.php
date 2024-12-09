@@ -21,16 +21,10 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $user = UserModel::create([
+            'username' => $request->username,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'nama' => $request->nama,
-            'nip' => $request->nip,
-            'jenis_kelamin' => $request->jenis_kelamin,
-            'jenjang_jabatan' => $request->jenjang_jabatan,
-            'pangkat' => $request->pangkat,
-            'golongan' => $request->golongan,
-            'jabatan_tugas_utama' => $request->jabatan_tugas_utama,
-            'jabatan_tugas_tambahan' => $request->jabatan_tugas_tambahan,
+            'role' => 'guru',
         ]);
 
         // Redirect dengan pesan sukses
