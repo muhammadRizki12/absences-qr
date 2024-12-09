@@ -15,6 +15,13 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        UserModel::factory()->count(10)->create(); // Membuat 10 data dummy
+        UserModel::create([
+            'username' => 'admin',
+            'email' => 'admin@gmail.com',
+            'password' => bcrypt('123456'),
+            'role' => 'admin'
+        ]);
+
+        UserModel::factory()->count(5)->create(); // Membuat 10 data dummy
     }
 }

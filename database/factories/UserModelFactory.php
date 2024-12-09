@@ -16,16 +16,10 @@ class UserModelFactory extends Factory
     public function definition()
     {
         return [
+            'username' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
-            'password' => bcrypt('123'),
-            'nama' => $this->faker->name(),
-            'nip' => $this->faker->unique()->numerify('##########'),
-            'jenis_kelamin' => $this->faker->randomElement(['Laki-laki', 'Perempuan']),
-            'jenjang_jabatan' => $this->faker->jobTitle(),
-            'pangkat' => $this->faker->regexify('IV/[a-e]'),
-            'golongan' => $this->faker->regexify('III/[a-e]'),
-            'jabatan_tugas_utama' => $this->faker->jobTitle(),
-            'jabatan_tugas_tambahan' => $this->faker->optional()->jobTitle(),
+            'password' => bcrypt('123456'),
+            'role' => 'user'
         ];
     }
 }
