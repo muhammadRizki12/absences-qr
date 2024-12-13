@@ -12,9 +12,16 @@ class UserModel extends Authenticatable
     protected $table = 'users';
 
     protected $fillable = [
+        "nip",
         "username",
         "email",
         "password",
+        'gender',
+        'rank',
+        'grade',
+        'job_tier',
+        'main_position',
+        'additional_position',
         "role"
     ];
     public $timestamps = false;

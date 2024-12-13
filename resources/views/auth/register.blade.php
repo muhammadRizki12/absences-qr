@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>Login</title>
+    <title>Register</title>
     <style>
         /* Gambar latar belakang full-screen */
         body {
-            background-image: url('{{ asset('assets/image/bg1.jpg') }}');
+            background-image: url('{{ asset('assets/image/bg_login.jpg') }}');
             background-size: cover;
             background-position: center;
             height: 100vh;
@@ -40,36 +40,49 @@
         <div class="row h-100 justify-content-center align-items-center">
             <div class="col-md-4 col-sm-8 col-10">
                 <div class="bg-primary text-white rounded-4 p-4">
-                    <h5 class="text-center">Login</h5>
+                    <h5 class="text-center">Create Account</h5>
 
-                    <!-- Menampilkan pesan kesalahan jika ada -->
-                    @if (session('failed'))
-                        <div class="alert alert-danger" role="alert">
-                            {{ session('failed') }}
+                    <!-- Menampilkan error validasi -->
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
                         </div>
                     @endif
 
-                    <!-- Form login -->
-                    <form action="{{ route('auth.login') }}" method="POST">
+                    <form action="{{ route('auth.register') }}" method="POST">
                         @csrf
                         <div class="mb-3">
                             <label for="username" class="form-label">Username</label>
                             <input type="text" class="form-control" id="username" name="username" required
-                                placeholder="Enter your username" value="{{ old('username') }}">
+                                placeholder="Enter your username">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required
+                                placeholder="Enter your email">
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
                             <input type="password" class="form-control" id="password" name="password" required
                                 placeholder="Enter your password">
                         </div>
-                        <div class="d-grid justify-content-center">
-                            <button type="submit" class="btn btn-light">Login</button>
+                        <div class="mb-3">
+                            <label for="password_confirmation" class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" id="password_confirmation"
+                                name="password_confirmation" required placeholder="Confirm your password">
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-light">Register</button>
                         </div>
                     </form>
 
-                    <p class="text-center mt-3"><small><a href="{{ route('auth.registerForm') }}"
-                                class="text-light">Create
-                                Account</a></small></p>
+                    <p class="text-center mt-3"><small><a href="{{ route('auth.loginForm') }}"
+                                class="text-light">Already have an
+                                account? Login here</a></small></p>
                 </div>
             </div>
         </div>

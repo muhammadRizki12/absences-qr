@@ -1,39 +1,20 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - SMK Negeri 1 Soreang</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>Data Guru</title>
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-
-        .container {
-            margin-top: 20px;
-        }
-
-        .btn-container {
-            text-align: right;
-            margin-bottom: 10px;
-        }
-
-        .btn-icon {
-            padding: 5px 10px;
-            font-size: 18px;
-        }
-    </style>
 </head>
 
 <body>
-
-    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Halo Admin - SMK Negeri 1 Soreang</a>
+            <a class="navbar-brand" href="#">
+                Halo Admin - SMK Negeri 1 Soreang
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -53,7 +34,6 @@
 
     <div class="container-fluid">
         <div class="row">
-
             <!-- Sidebar -->
             <div class="col-12 col-md-3 bg-light p-3">
                 <h5 class="text-primary">HOME</h5>
@@ -76,36 +56,37 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">Laporan Kehadiran</a>
                     </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('class.index') }}">Kelas</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('schedule.index') }}">Jadwal</a>
-                    </li>
                 </ul>
             </div>
 
             <!-- Main Content -->
-            <div class="col-12 col-md-9">
-                <div class="container">
-                    <h3 class="mb-4">Tambah Kelas</h3>
-                    <form action="{{ route('class.store') }}" method="post">
-                        @csrf
-                        <div>
-                            <label for="class_name">Nama kelas</label>
-                            <input type="text" name="class_name" id="class_name">
-                        </div>
-
-                        <div>
-                            <button type="submit">Save</button>
-                        </div>
-
-                    </form>
+            <div class="col-12 col-md-9 p-3">
+                <h3>Visi dan Misi</h3>
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white text-center">
+                        <h5>VISI</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        <p>Terwujudnya Peserta Didik Yang Religius, Cerdas, Terampil, Mandiri Dan Berwawasan Global</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header bg-success text-white text-center">
+                        <h5>MISI</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul>
+                            <li>Menanamkan keimanan dan ketakwaan, melalui pengalaman ajaran agama</li>
+                            <li>Mengoptimalkan proses pembelajaran dan bimbingan</li>
+                            <li>Mengembangkan bidang ilmu pengetahuan dan teknologi berdasarkan minat bakat dan potensi
+                                peserta didik</li>
+                            <li>Membina kemandirian peserta didik melalui kegiatan pembiasaan, kewirausahaan, dan
+                                pengembangan diri yang terencana dan berkesinambungan</li>
+                            <li>Menjalin kerjasama yang harmonis antar warga sekolah, dan lembaga lain yang terkait</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-
         </div>
     </div>
 

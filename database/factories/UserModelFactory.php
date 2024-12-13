@@ -16,10 +16,17 @@ class UserModelFactory extends Factory
     public function definition()
     {
         return [
-            'username' => $this->faker->name(),
-            'email' => $this->faker->unique()->safeEmail(),
-            'password' => bcrypt('123456'),
-            'role' => 'user'
+            'nip' => $this->faker->unique()->numerify('##########'),
+            'username' => $this->faker->userName,
+            'email' => $this->faker->unique()->safeEmail,
+            'password' => bcrypt('123456'), // Default password
+            'gender' => $this->faker->randomElement(['laki-laki', 'perempuan']),
+            'rank' => $this->faker->word,
+            'grade' => $this->faker->word,
+            'job_tier' => $this->faker->word,
+            'main_position' => $this->faker->jobTitle,
+            'additional_position' => $this->faker->optional()->jobTitle,
+            'role' => 'guru',
         ];
     }
 }

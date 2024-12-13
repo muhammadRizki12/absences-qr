@@ -22,16 +22,13 @@ class ClassController extends Controller
 
     public function store(Request $request)
     {
-
+        // get params
         $class_name = $request->class_name;
-        // $user = Auth::user();
-        // $userId = $user->id; // Akses ID
-        // dd("$userId");
 
         // Create QR Codes
         $qrCode = QrCode::format('png')
             ->size(300)
-            ->generate(url("absences/$class_name?user_id=1"));
+            ->generate(url("absences/$class_name"));
 
         // convert to base 64 format
         $base64Image = base64_encode($qrCode);
@@ -47,7 +44,8 @@ class ClassController extends Controller
 
     public function show($id)
     {
-        //
+        $class = ClassModel::find($id);
+        return view('classes.show', compact('class'));
     }
 
     public function edit($id)

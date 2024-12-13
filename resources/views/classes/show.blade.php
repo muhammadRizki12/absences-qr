@@ -90,19 +90,9 @@
             <!-- Main Content -->
             <div class="col-12 col-md-9">
                 <div class="container">
-                    <h3 class="mb-4">Tambah Kelas</h3>
-                    <form action="{{ route('class.store') }}" method="post">
-                        @csrf
-                        <div>
-                            <label for="class_name">Nama kelas</label>
-                            <input type="text" name="class_name" id="class_name">
-                        </div>
-
-                        <div>
-                            <button type="submit">Save</button>
-                        </div>
-
-                    </form>
+                    <h3 class="mb-4">Detail Kelas</h3>
+                    <h5>Kelas {{ $class->class_name }}</h5>
+                    <img src="data:image/png;base64,{{ $class->qr_image }}">
                 </div>
             </div>
 

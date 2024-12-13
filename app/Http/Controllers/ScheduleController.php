@@ -11,12 +11,13 @@ class ScheduleController extends Controller
 {
     public function index()
     {
-        return view('schedules.index');
+        $schedules = ScheduleModel::all();
+        return view('schedules.index', compact('schedules'));
     }
 
     public function create()
     {
-        $users = UserModel::all();
+        $users = UserModel::where('role', 'guru')->get();
         $classes = ClassModel::all();
         return view('schedules.create', compact('users', 'classes'));
     }
