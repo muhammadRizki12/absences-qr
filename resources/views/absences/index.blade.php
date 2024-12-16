@@ -5,113 +5,178 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Location Submission</title>
+    <title>Data Absensi</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            margin-top: 20px;
+        }
+
+        .btn-container {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .btn-icon {
+            padding: 5px 10px;
+            font-size: 18px;
+        }
+
+        table th,
+        table td {
+            vertical-align: middle;
+        }
+
+        .table thead {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .table-responsive {
+            margin-top: 20px;
+        }
+
+        .navbar {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Index Blade</h1>
-    <input type="text" id="lokasi">
-    <div id="error-message"></div>
 
-    <script>
-        // Wrap everything in a self-executing function to avoid global scope issues
-        (function() {
-            // Get DOM elements
-            const lokasiInput = document.getElementById('lokasi');
-            const errorMessageEl = document.getElementById('error-message');
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Halo Admin - SMK Negeri 1 Soreang</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
 
-            // Function to display error messages
-            function displayError(message) {
-                console.error(message);
-                if (errorMessageEl) {
-                    errorMessageEl.textContent = message;
-                    errorMessageEl.style.color = 'red';
-                }
-            }
+    <div class="container-fluid">
+        <div class="row">
 
-            // Check if geolocation is supported
-            if (!navigator.geolocation) {
-                displayError('Geolocation is not supported by this browser.');
-                return;
-            }
+            <!-- Sidebar -->
+            <div class="col-md-3 bg-light p-3">
+                <h5 class="text-primary">HOME</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard/dashboardadmin">Dashboard</a>
+                    </li>
+                </ul>
+                <h5 class="text-primary mt-3">ADMIN</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/users">Data Guru</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/classes">Kelas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/schedules">Jadwal</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/absences">Laporan Kehadiran</a>
+                    </li>
+                </ul>
+            </div>
 
-            // Success callback for geolocation
-            function successCallback(position) {
-                try {
-                    // Safely get coordinates
-                    const latitude = position.coords.latitude;
-                    const longitude = position.coords.longitude;
+            <!-- Main Content -->
+            <div class="col-12 col-md-9">
+                <div class="container">
+                    <h3 class="mb-4">Laporan Kehadiran</h3>
 
-                    // Validate coordinates
-                    if (!latitude || !longitude) {
-                        throw new Error('Invalid coordinates');
-                    }
+                    <!-- Filter Form -->
+                    <form method="GET" action="{{ route('absence.index') }}" class="mb-4">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <input type="date" name="date" class="form-control" value="{{ request('date') }}"
+                                    placeholder="Tanggal">
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" name="teacher_name" class="form-control"
+                                    value="{{ request('teacher_name') }}" placeholder="Nama Guru">
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" name="subject" class="form-control"
+                                    value="{{ request('subject') }}" placeholder="Mata Pelajaran">
+                            </div>
+                            <div class="col-md-2">
+                                <input type="text" name="class_name" class="form-control"
+                                    value="{{ request('class_name') }}" placeholder="Kelas">
+                            </div>
+                            <div class="col-md-2">
+                                <select name="status" class="form-control">
+                                    <option value="">Status</option>
+                                    <option value="Hadir" {{ request('status') == 'Hadir' ? 'selected' : '' }}>Hadir
+                                    </option>
+                                    <option value="Terlambat" {{ request('status') == 'Terlambat' ? 'selected' : '' }}>
+                                        Terlambat</option>
+                                    <option value="Tidak hadir"
+                                        {{ request('status') == 'Tidak hadir' ? 'selected' : '' }}>Tidak hadir</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Filter</button>
+                    </form>
 
-                    // Set input value
-                    if (lokasiInput) {
-                        lokasiInput.value = `${latitude},${longitude}`;
-                    }
+                    <!-- Tabel Data Absensi -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">No</th>
+                                    <th scope="col">Tanggal</th>
+                                    <th scope="col">Guru</th>
+                                    <th scope="col">Mata Pelajaran</th>
+                                    <th scope="col">Kelas</th>
+                                    <th scope="col">Waktu</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($absences as $absence)
+                                    <tr>
+                                        <td>{{ $loop->index + 1 }}</td>
+                                        <td>{{ $absence->schedule->day }}, {{ $absence->date }}</td>
+                                        <td>{{ $absence->schedule->user->username }}</td>
+                                        <td>{{ $absence->schedule->study }}</td>
+                                        <td>{{ $absence->schedule->class->class_name }}</td>
+                                        <td>{{ substr($absence->time, 0, 5) }}</td>
+                                        <td>{{ $absence->status }}</td>
+                                        <td>
+                                            <!-- Tombol Edit (ikon pensil) -->
+                                            <a href="{{ route('absence.edit', $absence->id) }}"
+                                                class="btn btn-warning btn-sm btn-icon" title="Edit">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
 
-                    // Prepare form data
-                    const formData = new FormData();
-                    formData.append('location', `${latitude},${longitude}`);
+                </div>
+            </div>
 
-                    // Send POST request
-                    fetch('/absences/{{ $class_name }}', {
-                            method: 'POST',
-                            body: formData,
-                            headers: {
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                                    'content'),
-                                'Accept': 'application/json'
-                            }
-                        })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok');
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            if (data.success) {
-                                // Redirect if success
-                                window.location.href = data.redirect;
-                            } else {
-                                // Tangani kesalahan
-                                console.error(data.message);
-                            }
-                        })
-                        .catch(error => {
-                            displayError('Submission error: ' + error.message);
-                        });
+        </div>
+    </div>
 
-                } catch (error) {
-                    displayError('Error processing location: ' + error.message);
-                }
-            }
-
-            // Error callback for geolocation
-            function errorCallback(error) {
-                switch (error.code) {
-                    case error.PERMISSION_DENIED:
-                        displayError("User denied the request for Geolocation.");
-                        break;
-                    case error.POSITION_UNAVAILABLE:
-                        displayError("Location information is unavailable.");
-                        break;
-                    case error.TIMEOUT:
-                        displayError("The request to get user location timed out.");
-                        break;
-                    case error.UNKNOWN_ERROR:
-                        displayError("An unknown error occurred.");
-                        break;
-                }
-            }
-
-            // Request current position
-            navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-        })();
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
     </script>
 </body>
 

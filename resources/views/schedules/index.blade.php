@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>Data Guru</title>
+    <title>Jadwal</title>
     <style>
         body {
             background-color: #f8f9fa;
@@ -25,6 +25,20 @@
             padding: 5px 10px;
             font-size: 18px;
         }
+
+        table th,
+        table td {
+            vertical-align: middle;
+        }
+
+        .table thead {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .table-responsive {
+            margin-top: 20px;
+        }
     </style>
 </head>
 
@@ -38,16 +52,6 @@
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/about">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/dashboard/dashboardadmin">Dashboard</a>
-                    </li>
-                </ul>
-            </div>
         </div>
     </nav>
 
@@ -55,7 +59,7 @@
         <div class="row">
 
             <!-- Sidebar -->
-            <div class="col-12 col-md-3 bg-light p-3">
+            <div class="col-md-3 bg-light p-3">
                 <h5 class="text-primary">HOME</h5>
                 <ul class="nav flex-column">
                     <li class="nav-item">
@@ -68,21 +72,16 @@
                 <h5 class="text-primary mt-3">ADMIN</h5>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="/dataguru">Data Guru</a>
+                        <a class="nav-link" href="/users">Data Guru</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Data Absensi</a>
+                        <a class="nav-link" href="/classes">Kelas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Laporan Kehadiran</a>
+                        <a class="nav-link" href="/schedules">Jadwal</a>
                     </li>
-
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('class.index') }}">Kelas</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('schedule.index') }}">Jadwal</a>
+                        <a class="nav-link" href="/absences">Laporan Kehadiran</a>
                     </li>
                 </ul>
             </div>
@@ -91,31 +90,64 @@
             <div class="col-12 col-md-9">
                 <div class="container">
                     <h3 class="mb-4">Jadwal</h3>
-                    <a href="{{ route('schedule.create') }}">Tambah Schedule</a>
-                    <table class="table">
-                        <tr>
-                            <th>no</th>
-                            <th>data schedule</th>
-                            <th>aksi</th>
-                        </tr>
 
-                        @foreach ($schedules as $schedule)
-                            <tr>
-                                <td>{{ $loop->index + 1 }}</td>
-                                <td>data schedule</td>
-                                <td>
-                                    <a href="{{ route('schedule.edit', $schedule->id) }}"
-                                        class="btn btn-success">edit</a>
-                                    <a href="{{ route('schedule.destroy', $schedule->id) }}"
-                                        class="btn btn-danger">delete</a>
-                                </td>
-                            </tr>
-                        @endforeach
+                    <!-- Tombol "Tambah Schedule" di atas tabel -->
+                    <div class="btn-container">
+                        <a href="{{ route('schedule.create') }}" class="btn btn-success">
+                            <i class="fas fa-plus"></i> Tambah Schedule
+                        </a>
+                    </div>
 
-                    </table>
+                    <!-- Tabel Jadwal -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">No</th>
+                                    <th scope="col">Mata pelajaran</th>
+                                    <th scope="col">Hari</th>
+                                    <th scope="col">Jam Waktu</th>
+                                    <th scope="col">Guru</th>
+                                    <th scope="col">kelas</th>
+                                    <th scope="col">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($schedules as $schedule)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $schedule->study }}</td>
+                                        <td>{{ $schedule->day }}</td>
+                                        <td>{{ substr($schedule->entry_time, 0, 5) }} -
+                                            {{ substr($schedule->out_time, 0, 5) }}</td>
+                                        <td>{{ $schedule->user->username }}</td>
+                                        <td>{{ $schedule->class->class_name }}</td>
+                                        <td>
+
+                                            <a href="{{ route('schedule.edit', $schedule->id) }}"
+                                                class="btn btn-warning btn-sm">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </a>
+
+                                            <form action="{{ route('schedule.destroy', $schedule->id) }}" method="POST"
+                                                style="display:inline;"
+                                                onsubmit="return confirm('Apakah Anda yakin ingin menghapus jadwal ini?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    <i class="fas fa-trash-alt"></i> Hapus
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
-
             </div>
+
         </div>
     </div>
 

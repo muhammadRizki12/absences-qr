@@ -13,7 +13,8 @@ class ClassModel extends Model
 
     protected $fillable = [
         'class_name',
-        'qr_image',
+        'latitude',
+        'longitude'
     ];
     public $timestamps = false;
 }
