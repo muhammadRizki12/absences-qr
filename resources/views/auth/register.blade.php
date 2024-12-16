@@ -10,7 +10,7 @@
     <style>
         /* Gambar latar belakang full-screen */
         body {
-            background-image: url('{{ asset('assets/image/bg_login.jpg') }}');
+            background-image: url('{{ asset('assets/image/bg1.jpg') }}');
             background-size: cover;
             background-position: center;
             height: 100vh;
@@ -56,7 +56,7 @@
                     <form action="{{ route('auth.register') }}" method="POST">
                         @csrf
                         <div class="mb-3">
-                            <label for="username" class="form-label">Username</label>
+                            <label for="username" class="form-label">Nama Lengkap</label>
                             <input type="text" class="form-control" id="username" name="username" required
                                 placeholder="Enter your username">
                         </div>
@@ -64,6 +64,17 @@
                             <label for="email" class="form-label">Email</label>
                             <input type="email" class="form-control" id="email" name="email" required
                                 placeholder="Enter your email">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Jenis Kelamin</label><br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="gender" id="male" value="male" {{ old('gender') == 'male' ? 'checked' : '' }} required>
+                                <label class="form-check-label" for="male">Laki - Laki</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="gender" id="female" value="female" {{ old('gender') == 'female' ? 'checked' : '' }} required>
+                                <label class="form-check-label" for="female">Perempuan</label>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Password</label>

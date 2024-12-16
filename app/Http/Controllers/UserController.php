@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\UserModel;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -51,13 +50,13 @@ class UserController extends Controller
 
     public function show($id)
     {
-        $user = UserModel::find($id);
+        $user = UserModel::findOrFail($id);
         return view('users.show', compact('user'));
     }
 
     public function edit($id)
     {
-        $user = UserModel::find($id);
+        $user = UserModel::findOrFail($id);
         /* check hash
         dd(Hash::check('123456', '$2y$10$92ySwiotE9bHCZVZGbYX2..MlJ8e7EubcgJgzx2gtG4sD97FQJum.'));
         */

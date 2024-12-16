@@ -14,7 +14,7 @@
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
                 Halo Admin - SMK Negeri 1 Soreang
-            </a>
+            </a>a
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -35,7 +35,7 @@
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
-            <div class="col-12 col-md-3 bg-light p-3">
+            <div class="col-md-3 bg-light p-3">
                 <h5 class="text-primary">HOME</h5>
                 <ul class="nav flex-column">
                     <li class="nav-item">
@@ -48,13 +48,16 @@
                 <h5 class="text-primary mt-3">ADMIN</h5>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="/dataguru">Data Guru</a>
+                        <a class="nav-link" href="/users">Data Guru</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Data Absensi</a>
+                        <a class="nav-link" href="/classes">Kelas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Laporan Kehadiran</a>
+                        <a class="nav-link" href="/schedules">Jadwal</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/laporan_kehadiran">Laporan Kehadiran</a>
                     </li>
                 </ul>
             </div>

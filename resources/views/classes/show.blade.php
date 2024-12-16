@@ -25,6 +25,15 @@
             padding: 5px 10px;
             font-size: 18px;
         }
+
+        /* Optional: To improve spacing and typography */
+        h3, h5 {
+            font-family: Arial, sans-serif;
+        }
+
+        .nav-link {
+            font-size: 16px;
+        }
     </style>
 </head>
 
@@ -38,24 +47,15 @@
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/about">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/dashboard/dashboardadmin">Dashboard</a>
-                    </li>
-                </ul>
-            </div>
         </div>
     </nav>
 
+    <!-- Main Content Area -->
     <div class="container-fluid">
         <div class="row">
 
             <!-- Sidebar -->
-            <div class="col-12 col-md-3 bg-light p-3">
+            <div class="col-md-3 bg-light p-3">
                 <h5 class="text-primary">HOME</h5>
                 <ul class="nav flex-column">
                     <li class="nav-item">
@@ -65,24 +65,20 @@
                         <a class="nav-link" href="/dashboard/dashboardadmin">Dashboard</a>
                     </li>
                 </ul>
+
                 <h5 class="text-primary mt-3">ADMIN</h5>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="/dataguru">Data Guru</a>
+                        <a class="nav-link" href="/users">Data Guru</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Data Absensi</a>
+                        <a class="nav-link" href="/classes">Kelas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Laporan Kehadiran</a>
+                        <a class="nav-link" href="/schedules">Jadwal</a>
                     </li>
-
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('class.index') }}">Kelas</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('schedule.index') }}">Jadwal</a>
+                        <a class="nav-link" href="/laporan_kehadiran">Laporan Kehadiran</a>
                     </li>
                 </ul>
             </div>
@@ -92,7 +88,12 @@
                 <div class="container">
                     <h3 class="mb-4">Detail Kelas</h3>
                     <h5>Kelas {{ $class->class_name }}</h5>
-                    <img src="data:image/png;base64,{{ $class->qr_image }}">
+                    <div class="qr-code mb-3">
+                        {{ $qrCode }}
+                    </div>
+                    <a href="{{ route('class.downloadQrCode', $class->class_name) }}" class="btn btn-primary">
+                        Download QR Code
+                    </a>
                 </div>
             </div>
 

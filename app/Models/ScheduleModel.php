@@ -11,6 +11,7 @@ class ScheduleModel extends Model
     protected $table = 'schedules';
 
     protected $fillable = [
+        'study',
         'day',
         'entry_time',
         'out_time',
@@ -19,9 +20,13 @@ class ScheduleModel extends Model
     ];
     public $timestamps = false;
 
-    // relation table 'classes'
     public function class()
     {
         return $this->belongsTo(ClassModel::class, 'class_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(UserModel::class, 'user_id');
     }
 }

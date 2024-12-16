@@ -14,6 +14,8 @@ class AdminMiddleware
             return $next($request);
         }
 
-        return redirect()->route('login')->with('msg', 'You do not have admin access!');
+        // return redirect()->route('auth.login')->with('msg', 'You do not have admin access!');
+        // Mengembalikan respon 403
+        abort(403, 'Unauthorized access.');
     }
 }

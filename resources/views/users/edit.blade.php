@@ -4,51 +4,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Edit User</title>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            margin-top: 20px;
+        }
+
+        .btn-container {
+            text-align: right;
+            margin-bottom: 10px;
+        }
+
+        .btn-icon {
+            padding: 5px 10px;
+            font-size: 18px;
+        }
+    </style>
 </head>
 
 <body>
-    <form action="{{ route('user.update', $user->id) }}" method="POST">
-        @csrf
-        @method('PATCH')
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Halo Admin - SMK Negeri 1 Soreang</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
 
-        <label for="nip">NIP:</label>
-        <input type="text" id="nip" name="nip" value="{{ $user->nip }}" required><br><br>
+    <div class="container-fluid">
+        <div class="row">
 
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" value="{{ $user->username }}" required><br><br>
+            <!-- Sidebar -->
+            <div class="col-md-3 bg-light p-3">
+                <h5 class="text-primary">HOME</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard/dashboardadmin">Dashboard</a>
+                    </li>
+                </ul>
+                <h5 class="text-primary mt-3">ADMIN</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/users">Data Guru</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/classes">Kelas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/schedules">Jadwal</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/laporan_kehadiran">Laporan Kehadiran</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-12 col-md-9">
+                <div class="container mt-4">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h4>Update User Information</h4>
+                        </div>
+                        <div class="card-body">
+                            <form action="{{ route('user.update', $user->id) }}" method="POST">
+                                @csrf
+                                @method('PATCH')
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" value="{{ $user->email }}" required><br><br>
+                                <!-- NIP -->
+                                <div class="mb-3">
+                                    <label for="nip" class="form-label">NIP:</label>
+                                    <input type="text" id="nip" name="nip" value="{{ $user->nip }}"
+                                        class="form-control" required>
+                                </div>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password"
-            placeholder="Leave blank to keep current password"><br><br>
+                                <!-- Username -->
+                                <div class="mb-3">
+                                    <label for="username" class="form-label">Username:</label>
+                                    <input type="text" id="username" name="username" value="{{ $user->username }}"
+                                        class="form-control" required>
+                                </div>
 
-        <label for="gender">Gender:</label>
-        <select id="gender" name="gender" required>
-            <option value="Male" {{ $user->gender == 'Male' ? 'selected' : '' }}>Male</option>
-            <option value="Female" {{ $user->gender == 'Female' ? 'selected' : '' }}>Female</option>
-        </select><br><br>
+                                <!-- Email -->
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email:</label>
+                                    <input type="email" id="email" name="email" value="{{ $user->email }}"
+                                        class="form-control" required>
+                                </div>
 
-        <label for="rank">Rank:</label>
-        <input type="text" id="rank" name="rank" value="{{ $user->rank }}"><br><br>
+                                <!-- Password -->
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Password:</label>
+                                    <input type="password" id="password" name="password"
+                                        placeholder="Leave blank to keep current password" class="form-control">
+                                </div>
 
-        <label for="grade">Grade:</label>
-        <input type="text" id="grade" name="grade" value="{{ $user->grade }}"><br><br>
+                                <!-- Gender -->
+                                <div class="mb-3">
+                                    <label for="gender" class="form-label">Jenis Kelamin:</label>
+                                    <select id="gender" name="gender" class="form-select" required>
+                                        <option value="Male" {{ $user->gender == 'Male' ? 'selected' : '' }}>Laki-Laki
+                                        </option>
+                                        <option value="Female" {{ $user->gender == 'Female' ? 'selected' : '' }}>
+                                            Perempuan</option>
+                                    </select>
+                                </div>
 
-        <label for="job_tier">Job Tier:</label>
-        <input type="text" id="job_tier" name="job_tier" value="{{ $user->job_tier }}"><br><br>
+                                <!-- Rank -->
+                                <div class="mb-3">
+                                    <label for="rank" class="form-label">Pangkat:</label>
+                                    <input type="text" id="rank" name="rank" value="{{ $user->rank }}"
+                                        class="form-control">
+                                </div>
 
-        <label for="main_position">Main Position:</label>
-        <input type="text" id="main_position" name="main_position" value="{{ $user->main_position }}"><br><br>
+                                <!-- Grade -->
+                                <div class="mb-3">
+                                    <label for="grade" class="form-label">Golongan:</label>
+                                    <input type="text" id="grade" name="grade" value="{{ $user->grade }}"
+                                        class="form-control">
+                                </div>
 
-        <label for="additional_position">Additional Position:</label>
-        <input type="text" id="additional_position" name="additional_position"
-            value="{{ $user->additional_position }}"><br><br>
+                                <!-- Job Tier -->
+                                <div class="mb-3">
+                                    <label for="job_tier" class="form-label">Jenjang Jabatan:</label>
+                                    <input type="text" id="job_tier" name="job_tier"
+                                        value="{{ $user->job_tier }}" class="form-control">
+                                </div>
 
-        <button type="submit">Update</button>
-    </form>
+                                <!-- Main Position -->
+                                <div class="mb-3">
+                                    <label for="main_position" class="form-label">Jabatan Utama:</label>
+                                    <input type="text" id="main_position" name="main_position"
+                                        value="{{ $user->main_position }}" class="form-control">
+                                </div>
+
+                                <!-- Additional Position -->
+                                <div class="mb-3">
+                                    <label for="additional_position" class="form-label">Jabatan Tambahan:</label>
+                                    <input type="text" id="additional_position" name="additional_position"
+                                        value="{{ $user->additional_position }}" class="form-control">
+                                </div>
+
+                                <!-- Submit Button -->
+                                <div class="d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary">Update</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bootstrap JS -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+            </script>
 </body>
 
 </html>

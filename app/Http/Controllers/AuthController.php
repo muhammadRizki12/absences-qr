@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AbsenceModel;
 use App\Models\UserModel;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,6 +23,7 @@ class AuthController extends Controller
         $request->validate([
             'username' => 'required|unique:users,username',
             'email' => 'required|email|unique:users,email',
+            'gender' => 'required|in:male,female',
             'password' => 'required|min:6|confirmed',
         ]);
 
@@ -28,6 +31,7 @@ class AuthController extends Controller
         $user = UserModel::create([
             'username' => $request->username,
             'email' => $request->email,
+            'gender' => $request->gender,
             'password' => bcrypt($request->password),
             'role' => 'guru', // Set role guru untuk pengguna ini
         ]);
@@ -45,12 +49,12 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'username' => 'required',
+            'email' => 'required',
             'password' => 'required',
         ]);
 
         $credentials = [
-            'username' => $request->username,
+            'email' => $request->email,
             'password' => $request->password,
         ];
 
@@ -64,7 +68,7 @@ class AuthController extends Controller
 
             // Jika guru login
             if ($user->role === 'guru') {
-                return redirect()->route('dashboardguru');
+                return redirect()->route('dashboardGuru.index');
             }
         }
 
@@ -74,12 +78,43 @@ class AuthController extends Controller
     // Halaman Dashboard
     public function dashboardadmin()
     {
+
+
+        $users = UserModel::where('role', 'guru')->get();
+        $usersCount = $users->count();
+
+        // Mendapatkan tanggal sekarang
+        $currentDate = Carbon::now()->toDateString(); // Format: "YYYY-MM-DD"
+
+        // Query untuk memfilter berdasarkan tanggal (tanpa waktu)
+        $absencePresent = AbsenceModel::where('status', 'Hadir')
+            ->whereDate('absence_datetime', $currentDate)
+            ->get();
+        $absencePresentCount = $absencePresent->count();
+
+        $absenceLate = AbsenceModel::where('status', 'Terlambat')
+            ->whereDate('absence_datetime', $currentDate)
+            ->get();
+        $absenceLateCount = $absenceLate->count();
+
+        $absenceAbsent = AbsenceModel::where('status', 'Tidak hadir')
+            ->whereDate('absence_datetime', $currentDate)
+            ->get();
+        $absenceAbsentCount = $absenceAbsent->count();
+
+        $absencePermission = AbsenceModel::where('status', 'Izin')
+            ->whereDate('absence_datetime', $currentDate)
+            ->get();
+        $absencePermissionCount = $absencePermission->count();
+
         $data = [
-            'total_guru' => 50,
-            'hadir' => 30,
-            'terlambat' => 0,
+            'total_guru' => $usersCount,
+            'hadir' => $absencePresentCount,
+            'terlambat' => $absenceLateCount,
+            'tidak_hadir' => $absenceAbsentCount,
+            'izin' => $absencePermissionCount,
         ];
-        return view('dashboard/dashboardadmin', $data);
+        return view('dashboard/dashboardadmin', compact('data'));
     }
 
     public function dashboardguru()

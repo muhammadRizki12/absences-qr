@@ -22,7 +22,7 @@
         <div class="row">
             <!-- Sidebar -->
             <div class="col-md-3 bg-light p-3 d-none d-md-block">
-                <!-- Tampilkan hanya di perangkat desktop (d-none d-md-block) -->
+                <!-- Tampilkan hanya di perangkat desktop -->
                 <h5 class="text-primary">HOME</h5>
                 <ul class="nav flex-column">
                     <li class="nav-item">
@@ -33,7 +33,17 @@
                 <h5 class="text-primary mt-3">MENU</h5>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="/dataguru">Data Kehadiran</a>
+                        <a class="nav-link" href="/users/absences/scan-qr"> Scan QR Absensi</a>
+                    </li>
+                </ul>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/users/absences">Data Kehadiran</a>
+                    </li>
+                </ul>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/users/schedules">Jadwal</a>
                     </li>
                 </ul>
             </div>
@@ -48,51 +58,50 @@
                                     <h4>Identitas Guru</h4>
                                 </div>
                                 <div class="card-body">
-                                    <!-- Foto Guru -->
-                                    <div class="text-center mb-4">
-                                        <img id="profile-image" src="https://via.placeholder.com/150"
-                                            class="rounded-circle" alt="Foto Guru" style="width: 150px; height: 150px;">
-                                    </div>
-
-                                    <!-- Input untuk upload foto -->
-                                    <div class="mb-3 text-center">
-                                        <label for="file-upload" class="btn btn-primary">
-                                            <i class="fas fa-upload"></i> Upload Foto
-                                        </label>
-                                        <input type="file" id="file-upload" accept="image/*" style="display: none;"
-                                            onchange="previewImage(event)">
-                                    </div>
-
                                     <!-- Data Guru -->
                                     <ul class="list-group">
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             Nama Lengkap
-                                            <span class="badge bg-primary rounded-pill">Udin</span>
+                                            <span class="badge bg-primary rounded-pill">{{ $user->username }}</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             NIP
-                                            <span class="badge bg-secondary rounded-pill">1234567890</span>
+                                            <span class="badge bg-secondary rounded-pill">{{ $user->nip }}</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            Pendidikan
-                                            <span class="badge bg-success rounded-pill">S1 Pendidikan</span>
+                                            Jenis Kelamin
+                                            <span class="badge bg-warning rounded-pill">{{ $user->gender }}</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            Jabatan
-                                            <span class="badge bg-warning rounded-pill">Guru Matematika</span>
+                                            Jenjang Jabatan
+                                            <span class="badge bg-info rounded-pill">{{ $user->job_tier }} </span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            Telepon
-                                            <span class="badge bg-info rounded-pill">081234567890</span>
+                                            Pangkat
+                                            <span class="badge bg-info rounded-pill">{{ $user->rank }}</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Golongan
+                                            <span class="badge bg-info rounded-pill">{{ $user->grade }} </span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Jabatan Tugas Utama
+                                            <span class="badge bg-danger rounded-pill">{{ $user->main_position }}</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Jabatan Tugas Tambahan
+                                            <span
+                                                class="badge bg-danger rounded-pill">{{ $user->additional_position }}</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             Email
-                                            <span class="badge bg-danger rounded-pill">udin@example.com</span>
+                                            <span class="badge bg-success rounded-pill">{{ $user->email }}</span>
                                         </li>
                                     </ul>
                                 </div>
+
                                 <div class="card-footer text-center">
-                                    <a href="#" class="btn btn-primary">
+                                    <a href="{{ route('dashboardGuru.edit') }}" class="btn btn-primary">
                                         <i class="fas fa-edit"></i> Edit
                                     </a>
                                 </div>
@@ -100,31 +109,10 @@
                         </div>
                     </div>
 
-                    <!-- Button Refresh -->
-                    <div class="row justify-content-center mt-4">
-                        <div class="col-md-4 text-center">
-                            <button class="btn btn-primary w-100">
-                                <i class="fas fa-sync"></i> Refresh Data
-                            </button>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <script>
-        // Fungsi untuk menampilkan gambar yang dipilih oleh pengguna
-        function previewImage(event) {
-            const file = event.target.files[0];
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                // Mengubah src gambar dengan file yang dipilih
-                document.getElementById('profile-image').src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">

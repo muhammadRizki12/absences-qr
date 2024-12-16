@@ -14,6 +14,6 @@ class GuruMiddleware
             return $next($request);
         }
 
-        return redirect()->route('login')->with('msg', 'You do not have guru access!');
+        return redirect()->route('auth.login')->with('msg', 'Anda belum login!');
     }
 }

@@ -16,4 +16,9 @@ class AbsenceModel extends Model
         'schedule_id'
     ];
     public $timestamps = false;
+
+    public function schedule()
+    {
+        return $this->belongsTo(ScheduleModel::class, 'schedule_id');
+    }
 }

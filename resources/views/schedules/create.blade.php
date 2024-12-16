@@ -5,57 +5,131 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Create-schedules</title>
+    <title>Create Schedules</title>
+    <!-- Menambahkan link CDN Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
-    <h1>Create Schedules</h1>
-    <form action="{{ route('schedule.store') }}" method="post">
-        @csrf
-        <div>
-            <label for="users">Choose a user:</label>
-            <select name="user_id" id="users">
-                @foreach ($users as $user)
-                    <option value={{ $user->id }}>{{ $user->username }}</option>
-                @endforeach
-            </select>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Halo Admin - SMK Negeri 1 Soreang</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
         </div>
+    </nav>
 
-        <div>
-            <label for="classes">Choose a class:</label>
-            <select name="class_id" id="classes">
-                @foreach ($classes as $class)
-                    <option value={{ $class->id }}>{{ $class->class_name }}</option>
-                @endforeach
-            </select>
-        </div>
+    <div class="container-fluid">
+        <div class="row">
 
-        <div>
-            <label for="day">Choose a day:</label>
-            <select name="day" id="day">
-                <option value="">--pilih hari--</option>
-                <option value="Senin">Senin</option>
-                <option value="Selasa">Selasa</option>
-                <option value="Rabu">Rabu</option>
-                <option value="Kamis">Kamis</option>
-                <option value="Jumat">Jumat</option>
-            </select>
-        </div>
+            <!-- Sidebar -->
+            <div class="col-md-3 bg-light p-3">
+                <h5 class="text-primary">HOME</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard/dashboardadmin">Dashboard</a>
+                    </li>
+                </ul>
+                <h5 class="text-primary mt-3">ADMIN</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/users">Data Guru</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/classes">Kelas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/schedules">Jadwal</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/laporan_kehadiran">Laporan Kehadiran</a>
+                    </li>
+                </ul>
+            </div>
 
-        <div>
-            <label for="entry_time">Choose a entry time:</label>
-            <input type="time" name="entry_time" id="entry_time">
-        </div>
+            <!-- Main Content -->
+            <div class="col-12 col-md-9">
+                <div class="container mt-4">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h4>Create Schedules</h4>
+                        </div>
+                        <div class="card-body">
+                            <form action="{{ route('schedule.store') }}" method="post">
+                                @csrf
 
-        <div>
-            <label for="out_time">Choose a out time:</label>
-            <input type="time" name="out_time" id="out_time">
-        </div>
+                                <!-- Study -->
+                                <div class="mb-3">
+                                    <label for="study" class="form-label">Mata pelajaran</label>
+                                    <input type="text" name="study" id="study" class="form-control" required>
+                                </div>
 
-        <div>
-            <button type="submit">Save</button>
+                                <!-- User Selection -->
+                                <div class="mb-3">
+                                    <label for="users" class="form-label">Choose a User</label>
+                                    <select name="user_id" id="users" class="form-select" required>
+                                        @foreach ($users as $user)
+                                            <option value="{{ $user->id }}">{{ $user->username }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <!-- Class Selection -->
+                                <div class="mb-3">
+                                    <label for="classes" class="form-label">Choose a Class</label>
+                                    <select name="class_id" id="classes" class="form-select" required>
+                                        @foreach ($classes as $class)
+                                            <option value="{{ $class->id }}">{{ $class->class_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <!-- Day Selection -->
+                                <div class="mb-3">
+                                    <label for="day" class="form-label">Choose a Day</label>
+                                    <select name="day" id="day" class="form-select" required>
+                                        <option value="">--pilih hari--</option>
+                                        <option value="Senin">Senin</option>
+                                        <option value="Selasa">Selasa</option>
+                                        <option value="Rabu">Rabu</option>
+                                        <option value="Kamis">Kamis</option>
+                                        <option value="Jumat">Jumat</option>
+                                    </select>
+                                </div>
+
+                                <!-- Entry Time -->
+                                <div class="mb-3">
+                                    <label for="entry_time" class="form-label">Entry Time</label>
+                                    <input type="time" name="entry_time" id="entry_time" class="form-control"
+                                        required>
+                                </div>
+
+                                <!-- Out Time -->
+                                <div class="mb-3">
+                                    <label for="out_time" class="form-label">Out Time</label>
+                                    <input type="time" name="out_time" id="out_time" class="form-control" required>
+                                </div>
+
+                                <!-- Submit Button -->
+                                <div class="d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
-    </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
