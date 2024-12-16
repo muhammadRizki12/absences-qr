@@ -25,15 +25,6 @@
             padding: 5px 10px;
             font-size: 18px;
         }
-
-        /* Optional: To improve spacing and typography */
-        h3, h5 {
-            font-family: Arial, sans-serif;
-        }
-
-        .nav-link {
-            font-size: 16px;
-        }
     </style>
 </head>
 

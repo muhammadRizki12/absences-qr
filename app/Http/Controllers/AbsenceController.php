@@ -11,93 +11,8 @@ use Illuminate\Support\Facades\Auth;
 
 class AbsenceController extends Controller
 {
-    public function index(Request $request)
-{
-    $query = AbsenceModel::query();
-
-    // Filter by date
-    if ($request->filled('date')) {
-        $query->whereDate('absence_datetime', Carbon::parse($request->date));
-    }
-
-    // Filter by teacher name (assuming 'username' is the teacher's name in users table)
-    if ($request->filled('teacher_name')) {
-        $query->whereHas('schedule.user', function ($query) use ($request) {
-            $query->where('username', 'like', '%' . $request->teacher_name . '%');
-        });
-    }
-
-    // Filter by subject (mata pelajaran)
-    if ($request->filled('subject')) {
-        $query->whereHas('schedule', function ($query) use ($request) {
-            $query->where('study', 'like', '%' . $request->subject . '%');
-        });
-    }
-
-    // Filter by class
-    if ($request->filled('class_name')) {
-        $query->whereHas('schedule.class', function ($query) use ($request) {
-            $query->where('class_name', 'like', '%' . $request->class_name . '%');
-        });
-    }
-
-    // Filter by status
-    if ($request->filled('status')) {
-        $query->where('status', $request->status);
-    }
-
-    // Fetch and map the absence data with formatted date and time
-    $absences = $query->get()->map(function ($absence) {
-        // Make sure absence_datetime exists and is a valid Carbon instance
-        $absence->date = Carbon::parse($absence->absence_datetime)->translatedFormat('j F Y');
-        $absence->time = Carbon::parse($absence->absence_datetime)->toTimeString();
-        return $absence;
-    });
-
-    return view('absences.index', compact('absences'));
-}
-
-
-    public function edit($id)
-    {
-        $absence = AbsenceModel::findOrFail($id);
-        return view('absences.edit', compact('absence'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $absence = AbsenceModel::findOrFail($id);
-
-        // Update password only if a new password is provided
-        $data = $request->only(['absence_datetime', 'status']);
-
-        // update data
-        $updateAbsence = $absence->update($data);
-
-        if (!$updateAbsence) return redirect()->route('absence.edit')->with('msg', 'Absence update failed!');
-
-        return redirect()->route('absence.index')->with('msg', 'Absence updated successfully.');
-    }
-
-    public function userAbsence()
-    {
-        $user_id = Auth::user()->id;
-
-        $absences = AbsenceModel::whereHas('schedule', function ($query) use ($user_id) {
-            $query->where('user_id', $user_id);
-        })->with(['schedule.class', 'schedule.user'])->get();
-
-        $absences = $absences->map(function ($absence) {
-            $absence->date = Carbon::parse($absence->absence_datetime)->translatedFormat('j F Y');
-            $absence->time = Carbon::parse($absence->absence_datetime)->toTimeString();
-            return $absence;
-        });
-
-        return view('absences.userAbsence', compact('absences'));
-    }
-
-
-    public function absence(Request $request)
+    public function index() {}
+    public function store(Request $request)
     {
         // get user data by auth
         $user = Auth::user();
@@ -144,50 +59,66 @@ class AbsenceController extends Controller
         $longitudeClass = floatval($class->longitude);
         $latitudeClass = floatval($class->latitude);
 
-        // Fungsi untuk menghitung jarak
-        $distance = $this->distance($latitudeClass, $longitudeClass, $latitudeCurrent, $longitudeCurrent);
+        // // added 30 minutes tolerance
+        // $entryTimePlus30 = $entryTime->copy()->addMinutes(30);
 
-        // if ($distance >= 50) {
-        //     return response()->json([
-        //         'message' => 'Anda di luar jangkauan!',
-        //         'redirect_url' => '/users/absences/scan-qr',
-        //     ], 400);
+        // // declaration status result
+        // $status = '';
+
+        // // validation absence time
+        // if ($currentTime->lt($entryTime)) {
+        //     // absent before time
+        //     return "Belum waktunya absen";
+        // } else if ($currentTime->between($entryTime, $entryTimePlus30)) {
+        //     // ontime (30 minute after entry_time)
+        //     $status = 'Hadir';
+        // } else if ($currentTime->gt($entryTimePlus30) && $currentTime->lt($outTime)) {
+        //     // late (more than 30 minutes after entry time)
+        //     $status = 'Terlambat';
+        // } else {
+        //     // more than out time
+        //     $status = 'Tidak hadir';
         // }
 
-        // get timeDate now
-        $currentTime = Carbon::now();
-        // set locale to indonesian
-        Carbon::setLocale('id');
+        // // saves data to absence
+        // $absence = AbsenceModel::create([
+        //     'absence_datetime' => $currentTime,
+        //     'status' => $status,
+        //     'schedule_id' => $schedule->id
+        // ]);
 
-        // get day in locale indonesian
-        $currentDay = $currentTime->translatedFormat('l');
+        // // check absence
+        // if (!$absence) return 'Absence failed!';
 
-        // get user data by auth
-        $user_id = Auth::user()->id;
+        // Return data user dan class sebagai respons JSON
+        // return response()->json([$absence], 200);
+    }
 
-        // get schedule by user_id, class_name, and $current day
-        $schedule = ScheduleModel::with('class')
-            ->where('user_id', $user_id)
-            ->whereHas('class', function ($query) use ($class_name) {
-                $query->where('class_name', "$class_name");
-            })
-            ->where('day', $currentDay)
-            ->first();
+    public function huha(Request $request, $class_name)
+    {
+        // Log the incoming request for debugging
+        Log::info('Absence Store Request', [
+            'class_name' => $class_name,
+            'location' => $request->input('location'),
+            'all_inputs' => $request->all()
+        ]);
 
-        // Validasi jika schedule gagal
-        if (!$schedule) {
-            return response()->json([
-                'message' => 'Schedule failed!',
-                'redirect_url' => '/users/absences/scan-qr',
-            ], 400);
-        }
+        try {
+            // Validate the incoming request
+            $validatedData = $request->validate([
+                'location' => 'required|string'
+            ]);
 
-        // cek schedule apakah sudah absen atau belum user-nya
-        // absen hanya bisa 1x untuk 1 schedule
-        $checkAbsence = AbsenceModel::where('schedule_id', $schedule->id)->get();
-        $checkAbsenceCount = $checkAbsence->count();
+            // Split the location into latitude and longitude
+            $locationParts = explode(',', $validatedData['location']);
 
-        if ($checkAbsenceCount > 1) {
+            // Ensure we have valid coordinates
+            if (count($locationParts) !== 2) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid location format'
+                ], 400);
+            }
             return response()->json([
                 'message' => 'Sudah absen!',
                 'redirect_url' => '/users/absences',
